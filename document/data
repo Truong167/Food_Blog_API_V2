@@ -1,0 +1,272 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.1
+-- Dumped by pg_dump version 15.1
+
+-- Started on 2023-02-18 21:29:14
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3433 (class 0 OID 33286)
+-- Dependencies: 216
+-- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."User" VALUES (3, 'Phan Thanh Trụ', '2001-09-09 00:00:00+07', 'Quận 9', 'ptt@gmail.com', NULL, NULL, NULL, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."User" VALUES (1, 'Vũ Việt Trường', '2001-09-09 00:00:00+07', 'Quận 9', 'vtt@gmail.com', NULL, 'user/phihanhgia.jpg', NULL, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."User" VALUES (2, 'Nguyễn Thành Tân', '2001-09-09 00:00:00+07', 'Quận 9', 'ntt@gmail.com', 'tôi là Tân', 'user/no_avatar.png', NULL, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."User" VALUES (4, 'Nguyễn Thị Phúc Thi', '2001-09-09 00:00:00+07', 'Quận 9', 'ntpt@gmail.com', 'tôi là Phúc Thi', 'user/no_avatar.png', NULL, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3434 (class 0 OID 33294)
+-- Dependencies: 217
+-- Data for Name: Account; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Account" VALUES ('PTT', '$2a$10$GvdLGQ7t1/314lfi5CkdZug/woL5rS9FifONMaOAWt76Tr3gNECPy', 3, '2023-02-05 10:56:22.23+07', '2023-02-05 10:56:22.23+07');
+INSERT INTO public."Account" VALUES ('NTPT', '$2a$10$xL7NWYpdoE466BIPW2Z7Au.dTPgN5fDmjEH3dZcJfdgYVFm6OtvKW', 4, '2023-02-05 10:56:22.23+07', '2023-02-05 10:56:22.23+07');
+INSERT INTO public."Account" VALUES ('NTT', '$2a$10$4Tzx0FMbzS9yMAImlLq5Vuqd0iRngjD06ZLNscaohJvJT9Ybl3/le', 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Account" VALUES ('VVT', '$2a$10$XVIYhh12zUvdWeQsU08p0er0I2le2fY6D7VUrI29M4UGILMmcWHOi', 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3436 (class 0 OID 33317)
+-- Dependencies: 219
+-- Data for Name: Recipe; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Recipe" VALUES (5, 'Phở', '2023-01-27 00:00:00+07', 'CK', 4, 100, 100, 10, NULL, NULL, 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Recipe" VALUES (4, 'Mì', '2023-01-27 00:00:00+07', 'CK', 3, 1, 1, 2, NULL, NULL, 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Recipe" VALUES (6, 'test', '2001-01-01 07:00:00+07', 'CK', 4, 100, 200, 1, NULL, NULL, 1, '2023-01-27 15:44:44.117+07', '2023-01-28 10:33:10.906+07');
+INSERT INTO public."Recipe" VALUES (8, 'test', '2023-01-01 07:00:00+07', 'CK', 4, 100, 200, 0, NULL, NULL, 2, '2023-01-28 09:22:50.262+07', '2023-01-29 21:29:09.168+07');
+INSERT INTO public."Recipe" VALUES (3, 'test', '2023-02-03 19:15:31.752+07', 'CK', 4, 100, 200, 0, NULL, NULL, 2, '2023-02-03 19:15:31.753+07', '2023-02-03 19:15:31.753+07');
+INSERT INTO public."Recipe" VALUES (9, 'Cơm chiên', '2023-02-03 19:48:11.402+07', 'CK', 4, 100, 200, 0, NULL, NULL, 2, '2023-02-03 19:48:11.403+07', '2023-02-03 19:48:11.403+07');
+INSERT INTO public."Recipe" VALUES (10, 'Cơm chiên', '2023-02-03 19:48:13.926+07', 'CK', 4, 100, 200, 0, NULL, NULL, 2, '2023-02-03 19:48:13.927+07', '2023-02-03 19:48:13.927+07');
+INSERT INTO public."Recipe" VALUES (11, 'Cơm chiên', '2023-02-03 19:48:17.765+07', 'CK', 4, 100, 200, 0, NULL, NULL, 2, '2023-02-03 19:48:17.766+07', '2023-02-03 19:48:17.766+07');
+
+
+--
+-- TOC entry 3437 (class 0 OID 33333)
+-- Dependencies: 220
+-- Data for Name: Comment; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Comment" VALUES (1, 4, '2023-01-27 00:00:00+07', 'Món này ngon quá !!!!', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Comment" VALUES (2, 4, '2023-01-27 00:00:00+07', 'Món này siêu ngon !!!', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Comment" VALUES (1, 8, '2023-02-02 20:15:07.52+07', 'Món này ngon xỉu', '2023-02-02 20:15:07.522+07', '2023-02-02 20:15:07.522+07');
+
+
+--
+-- TOC entry 3438 (class 0 OID 33353)
+-- Dependencies: 221
+-- Data for Name: Ingredient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Ingredient" VALUES ('trungga', 'Trứng gà', '\x6164', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Ingredient" VALUES ('botmi', 'Bột mì', '\x646164', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3439 (class 0 OID 33360)
+-- Dependencies: 222
+-- Data for Name: DetailIngredient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."DetailIngredient" VALUES ('trungga', 4, 'description', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."DetailIngredient" VALUES ('trungga', 5, 'description', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."DetailIngredient" VALUES ('botmi', 4, 'description', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3441 (class 0 OID 33381)
+-- Dependencies: 224
+-- Data for Name: RecipeList; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."RecipeList" VALUES (1, 'Món nước', '2023-01-27 00:00:00+07', 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."RecipeList" VALUES (5, 'Món khô', '2023-02-03 20:42:22.77+07', 2, '2023-02-03 20:42:22.771+07', '2023-02-03 20:42:22.771+07');
+INSERT INTO public."RecipeList" VALUES (7, 'Món khô', '2023-02-03 20:48:38.88+07', 2, '2023-02-03 20:48:38.88+07', '2023-02-03 20:48:38.88+07');
+INSERT INTO public."RecipeList" VALUES (8, 'Món khô', '2023-02-03 20:50:10.191+07', 2, '2023-02-03 20:50:10.193+07', '2023-02-03 20:50:10.193+07');
+
+
+--
+-- TOC entry 3442 (class 0 OID 33392)
+-- Dependencies: 225
+-- Data for Name: DetailList; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."DetailList" VALUES (1, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."DetailList" VALUES (1, 5, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."DetailList" VALUES (1, 8, '2023-02-03 21:16:50.534+07', '2023-02-03 21:16:50.535+07', '2023-02-03 21:16:50.535+07');
+INSERT INTO public."DetailList" VALUES (5, 5, '2023-02-03 21:17:37.544+07', '2023-02-03 21:17:37.544+07', '2023-02-03 21:17:37.544+07');
+
+
+--
+-- TOC entry 3443 (class 0 OID 33407)
+-- Dependencies: 226
+-- Data for Name: Favorite; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Favorite" VALUES (1, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Favorite" VALUES (2, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3444 (class 0 OID 33422)
+-- Dependencies: 227
+-- Data for Name: Follow; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Follow" VALUES (1, 2, true, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3446 (class 0 OID 33448)
+-- Dependencies: 229
+-- Data for Name: Season; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Season" VALUES (1, 'Xuân', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Season" VALUES (2, 'Hạ', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Season" VALUES (3, 'Thu', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Season" VALUES (4, 'Đông', '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3447 (class 0 OID 33454)
+-- Dependencies: 230
+-- Data for Name: IngredientSeason; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."IngredientSeason" VALUES ('trungga', 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."IngredientSeason" VALUES ('trungga', 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."IngredientSeason" VALUES ('botmi', 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."IngredientSeason" VALUES ('botmi', 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3449 (class 0 OID 33470)
+-- Dependencies: 232
+-- Data for Name: Month; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Month" VALUES (1, 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (2, 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (3, 1, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (4, 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (5, 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (6, 2, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (7, 3, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (8, 3, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (9, 3, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (10, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (11, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Month" VALUES (12, 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3431 (class 0 OID 33273)
+-- Dependencies: 214
+-- Data for Name: SequelizeMeta; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-user.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-account.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-recipe.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-comment.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-ingredient.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-detailIngredient.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-recipeList.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-detailList.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-favorite.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-follow.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-season.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-ingredientSeason.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-month.js');
+INSERT INTO public."SequelizeMeta" VALUES ('migration-create-step.js');
+
+
+--
+-- TOC entry 3451 (class 0 OID 33482)
+-- Dependencies: 234
+-- Data for Name: Step; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."Step" VALUES (3, 'Trụng mì', '\x6e6f6e65', 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Step" VALUES (4, 'Chiên trứng', '\x6e6f6e6532', 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+INSERT INTO public."Step" VALUES (5, 'Thêm hành, rau sống, hành phi', '\x31', 4, '2023-01-27 00:00:00+07', '2023-01-27 00:00:00+07');
+
+
+--
+-- TOC entry 3457 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: Month_monthId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Month_monthId_seq"', 1, false);
+
+
+--
+-- TOC entry 3458 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: RecipeList_recipeListId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."RecipeList_recipeListId_seq"', 1, false);
+
+
+--
+-- TOC entry 3459 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: Recipe_recipeId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Recipe_recipeId_seq"', 1, false);
+
+
+--
+-- TOC entry 3460 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: Season_seasonId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Season_seasonId_seq"', 1, false);
+
+
+--
+-- TOC entry 3461 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: Step_stepId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Step_stepId_seq"', 1, false);
+
+
+--
+-- TOC entry 3462 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: User_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."User_userId_seq"', 1, false);
+
+
+-- Completed on 2023-02-18 21:29:14
+
+--
+-- PostgreSQL database dump complete
+--
+

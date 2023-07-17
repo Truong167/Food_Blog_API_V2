@@ -1,0 +1,847 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.1
+-- Dumped by pg_dump version 15.1
+
+-- Started on 2023-02-19 09:13:50
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3447 (class 1262 OID 16399)
+-- Name: foodblog; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE foodblog WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'English_United States.1252';
+
+
+ALTER DATABASE foodblog OWNER TO postgres;
+
+\connect foodblog
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 4 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO pg_database_owner;
+
+--
+-- TOC entry 3448 (class 0 OID 0)
+-- Dependencies: 4
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 217 (class 1259 OID 33294)
+-- Name: Account; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Account" (
+    "accountName" character varying(20) NOT NULL,
+    password character varying(100) NOT NULL,
+    "userId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Account" OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 33333)
+-- Name: Comment; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Comment" (
+    "userId" integer NOT NULL,
+    "recipeId" integer NOT NULL,
+    date timestamp with time zone NOT NULL,
+    comment character varying(128) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Comment" OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 33360)
+-- Name: DetailIngredient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."DetailIngredient" (
+    "ingredientId" character varying(128) NOT NULL,
+    "recipeId" integer NOT NULL,
+    amount character varying(20) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."DetailIngredient" OWNER TO postgres;
+
+--
+-- TOC entry 225 (class 1259 OID 33392)
+-- Name: DetailList; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."DetailList" (
+    "recipeListId" integer NOT NULL,
+    "recipeId" integer NOT NULL,
+    date timestamp with time zone NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."DetailList" OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 33407)
+-- Name: Favorite; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Favorite" (
+    "userId" integer NOT NULL,
+    "recipeId" integer NOT NULL,
+    date timestamp with time zone NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Favorite" OWNER TO postgres;
+
+--
+-- TOC entry 227 (class 1259 OID 33422)
+-- Name: Follow; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Follow" (
+    "userIdFollow" integer NOT NULL,
+    "userIdFollowed" integer NOT NULL,
+    "isSeen" boolean NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Follow" OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 33353)
+-- Name: Ingredient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Ingredient" (
+    "ingredientId" character varying(128) NOT NULL,
+    name character varying(128) NOT NULL,
+    image character varying(128) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Ingredient" OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 33454)
+-- Name: IngredientSeason; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."IngredientSeason" (
+    "ingredientId" character varying(128) NOT NULL,
+    "seasonId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."IngredientSeason" OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 33470)
+-- Name: Month; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Month" (
+    "monthId" integer NOT NULL,
+    "seasonId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Month" OWNER TO postgres;
+
+--
+-- TOC entry 231 (class 1259 OID 33469)
+-- Name: Month_monthId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Month_monthId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Month_monthId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3449 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: Month_monthId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Month_monthId_seq" OWNED BY public."Month"."monthId";
+
+
+--
+-- TOC entry 219 (class 1259 OID 33317)
+-- Name: Recipe; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Recipe" (
+    "recipeId" integer NOT NULL,
+    "recipeName" character varying(128) NOT NULL,
+    date timestamp with time zone NOT NULL,
+    status character varying(5) NOT NULL,
+    amount integer NOT NULL,
+    "preparationTime" integer NOT NULL,
+    "cookingTime" integer NOT NULL,
+    "numberOfLikes" integer DEFAULT 0 NOT NULL,
+    image character varying(128),
+    description character varying(128),
+    "userId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    CONSTRAINT "Recipe_amount_ck" CHECK ((amount >= 1)),
+    CONSTRAINT "Recipe_cookingTime_ck" CHECK (("cookingTime" >= 1)),
+    CONSTRAINT "Recipe_preparationTime_ck" CHECK (("preparationTime" >= 1)),
+    CONSTRAINT "Recipe_status_ck" CHECK (((status)::text = ANY ((ARRAY['RT'::character varying, 'CK'::character varying])::text[])))
+);
+
+
+ALTER TABLE public."Recipe" OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 33381)
+-- Name: RecipeList; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."RecipeList" (
+    "recipeListId" integer NOT NULL,
+    name character varying(20) NOT NULL,
+    date timestamp with time zone NOT NULL,
+    "userId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."RecipeList" OWNER TO postgres;
+
+--
+-- TOC entry 223 (class 1259 OID 33380)
+-- Name: RecipeList_recipeListId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."RecipeList_recipeListId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."RecipeList_recipeListId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3450 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: RecipeList_recipeListId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."RecipeList_recipeListId_seq" OWNED BY public."RecipeList"."recipeListId";
+
+
+--
+-- TOC entry 218 (class 1259 OID 33316)
+-- Name: Recipe_recipeId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Recipe_recipeId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Recipe_recipeId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3451 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: Recipe_recipeId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Recipe_recipeId_seq" OWNED BY public."Recipe"."recipeId";
+
+
+--
+-- TOC entry 229 (class 1259 OID 33448)
+-- Name: Season; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Season" (
+    "seasonId" integer NOT NULL,
+    "nameOfSeason" character varying(20) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Season" OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 33447)
+-- Name: Season_seasonId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Season_seasonId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Season_seasonId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3452 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: Season_seasonId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Season_seasonId_seq" OWNED BY public."Season"."seasonId";
+
+
+--
+-- TOC entry 214 (class 1259 OID 33273)
+-- Name: SequelizeMeta; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."SequelizeMeta" (
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."SequelizeMeta" OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 33482)
+-- Name: Step; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Step" (
+    "stepId" integer NOT NULL,
+    description character varying(128) NOT NULL,
+    image character varying(128) NOT NULL,
+    "recipeId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Step" OWNER TO postgres;
+
+--
+-- TOC entry 233 (class 1259 OID 33481)
+-- Name: Step_stepId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Step_stepId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Step_stepId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3453 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: Step_stepId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Step_stepId_seq" OWNED BY public."Step"."stepId";
+
+
+--
+-- TOC entry 216 (class 1259 OID 33286)
+-- Name: User; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."User" (
+    "userId" integer NOT NULL,
+    "fullName" character varying(50) NOT NULL,
+    "dateOfBirth" timestamp with time zone,
+    address character varying(50),
+    email character varying(128) NOT NULL,
+    introduce character varying(128),
+    avatar character varying(128),
+    "dateUpdatedRecipe" timestamp with time zone,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."User" OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 33285)
+-- Name: User_userId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."User_userId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."User_userId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3454 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: User_userId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."User_userId_seq" OWNED BY public."User"."userId";
+
+
+--
+-- TOC entry 3239 (class 2604 OID 33473)
+-- Name: Month monthId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Month" ALTER COLUMN "monthId" SET DEFAULT nextval('public."Month_monthId_seq"'::regclass);
+
+
+--
+-- TOC entry 3235 (class 2604 OID 33320)
+-- Name: Recipe recipeId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe" ALTER COLUMN "recipeId" SET DEFAULT nextval('public."Recipe_recipeId_seq"'::regclass);
+
+
+--
+-- TOC entry 3237 (class 2604 OID 33384)
+-- Name: RecipeList recipeListId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."RecipeList" ALTER COLUMN "recipeListId" SET DEFAULT nextval('public."RecipeList_recipeListId_seq"'::regclass);
+
+
+--
+-- TOC entry 3238 (class 2604 OID 33451)
+-- Name: Season seasonId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Season" ALTER COLUMN "seasonId" SET DEFAULT nextval('public."Season_seasonId_seq"'::regclass);
+
+
+--
+-- TOC entry 3240 (class 2604 OID 33485)
+-- Name: Step stepId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Step" ALTER COLUMN "stepId" SET DEFAULT nextval('public."Step_stepId_seq"'::regclass);
+
+
+--
+-- TOC entry 3234 (class 2604 OID 33289)
+-- Name: User userId; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."User" ALTER COLUMN "userId" SET DEFAULT nextval('public."User_userId_seq"'::regclass);
+
+
+--
+-- TOC entry 3252 (class 2606 OID 33298)
+-- Name: Account Account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Account"
+    ADD CONSTRAINT "Account_pkey" PRIMARY KEY ("accountName");
+
+
+--
+-- TOC entry 3254 (class 2606 OID 33300)
+-- Name: Account Account_userId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Account"
+    ADD CONSTRAINT "Account_userId_key" UNIQUE ("userId");
+
+
+--
+-- TOC entry 3258 (class 2606 OID 33337)
+-- Name: Comment Comment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Comment"
+    ADD CONSTRAINT "Comment_pkey" PRIMARY KEY ("userId", "recipeId");
+
+
+--
+-- TOC entry 3264 (class 2606 OID 33364)
+-- Name: DetailIngredient DetailIngredient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailIngredient"
+    ADD CONSTRAINT "DetailIngredient_pkey" PRIMARY KEY ("ingredientId", "recipeId");
+
+
+--
+-- TOC entry 3268 (class 2606 OID 33396)
+-- Name: DetailList DetailList_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailList"
+    ADD CONSTRAINT "DetailList_pkey" PRIMARY KEY ("recipeListId", "recipeId");
+
+
+--
+-- TOC entry 3270 (class 2606 OID 33411)
+-- Name: Favorite Favorite_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Favorite"
+    ADD CONSTRAINT "Favorite_pkey" PRIMARY KEY ("userId", "recipeId");
+
+
+--
+-- TOC entry 3272 (class 2606 OID 33426)
+-- Name: Follow Follow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Follow"
+    ADD CONSTRAINT "Follow_pkey" PRIMARY KEY ("userIdFollow", "userIdFollowed");
+
+
+--
+-- TOC entry 3276 (class 2606 OID 33458)
+-- Name: IngredientSeason IngredientSeason_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."IngredientSeason"
+    ADD CONSTRAINT "IngredientSeason_pkey" PRIMARY KEY ("ingredientId", "seasonId");
+
+
+--
+-- TOC entry 3260 (class 2606 OID 33359)
+-- Name: Ingredient Ingredient_image_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Ingredient"
+    ADD CONSTRAINT "Ingredient_image_key" UNIQUE (image);
+
+
+--
+-- TOC entry 3262 (class 2606 OID 33357)
+-- Name: Ingredient Ingredient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Ingredient"
+    ADD CONSTRAINT "Ingredient_pkey" PRIMARY KEY ("ingredientId");
+
+
+--
+-- TOC entry 3278 (class 2606 OID 33475)
+-- Name: Month Month_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Month"
+    ADD CONSTRAINT "Month_pkey" PRIMARY KEY ("monthId");
+
+
+--
+-- TOC entry 3266 (class 2606 OID 33386)
+-- Name: RecipeList RecipeList_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."RecipeList"
+    ADD CONSTRAINT "RecipeList_pkey" PRIMARY KEY ("recipeListId");
+
+
+--
+-- TOC entry 3256 (class 2606 OID 33323)
+-- Name: Recipe Recipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe"
+    ADD CONSTRAINT "Recipe_pkey" PRIMARY KEY ("recipeId");
+
+
+--
+-- TOC entry 3274 (class 2606 OID 33453)
+-- Name: Season Season_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Season"
+    ADD CONSTRAINT "Season_pkey" PRIMARY KEY ("seasonId");
+
+
+--
+-- TOC entry 3246 (class 2606 OID 33277)
+-- Name: SequelizeMeta SequelizeMeta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."SequelizeMeta"
+    ADD CONSTRAINT "SequelizeMeta_pkey" PRIMARY KEY (name);
+
+
+--
+-- TOC entry 3280 (class 2606 OID 33489)
+-- Name: Step Step_image_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Step"
+    ADD CONSTRAINT "Step_image_key" UNIQUE (image);
+
+
+--
+-- TOC entry 3282 (class 2606 OID 33487)
+-- Name: Step Step_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Step"
+    ADD CONSTRAINT "Step_pkey" PRIMARY KEY ("stepId");
+
+
+--
+-- TOC entry 3248 (class 2606 OID 33293)
+-- Name: User User_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."User"
+    ADD CONSTRAINT "User_email_key" UNIQUE (email);
+
+
+--
+-- TOC entry 3250 (class 2606 OID 33291)
+-- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."User"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY ("userId");
+
+
+--
+-- TOC entry 3283 (class 2606 OID 33301)
+-- Name: Account Account_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Account"
+    ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"("userId") ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3285 (class 2606 OID 33343)
+-- Name: Comment Comment_recipeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Comment"
+    ADD CONSTRAINT "Comment_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES public."Recipe"("recipeId");
+
+
+--
+-- TOC entry 3286 (class 2606 OID 33338)
+-- Name: Comment Comment_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Comment"
+    ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3287 (class 2606 OID 33365)
+-- Name: DetailIngredient DetailIngredient_ingredientId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailIngredient"
+    ADD CONSTRAINT "DetailIngredient_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES public."Ingredient"("ingredientId");
+
+
+--
+-- TOC entry 3288 (class 2606 OID 33370)
+-- Name: DetailIngredient DetailIngredient_recipeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailIngredient"
+    ADD CONSTRAINT "DetailIngredient_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES public."Recipe"("recipeId");
+
+
+--
+-- TOC entry 3290 (class 2606 OID 33402)
+-- Name: DetailList DetailList_recipeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailList"
+    ADD CONSTRAINT "DetailList_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES public."Recipe"("recipeId");
+
+
+--
+-- TOC entry 3291 (class 2606 OID 33397)
+-- Name: DetailList DetailList_recipeListId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."DetailList"
+    ADD CONSTRAINT "DetailList_recipeListId_fkey" FOREIGN KEY ("recipeListId") REFERENCES public."RecipeList"("recipeListId");
+
+
+--
+-- TOC entry 3292 (class 2606 OID 33417)
+-- Name: Favorite Favorite_recipeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Favorite"
+    ADD CONSTRAINT "Favorite_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES public."Recipe"("recipeId");
+
+
+--
+-- TOC entry 3293 (class 2606 OID 33412)
+-- Name: Favorite Favorite_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Favorite"
+    ADD CONSTRAINT "Favorite_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3294 (class 2606 OID 33427)
+-- Name: Follow Follow_userIdFollow_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Follow"
+    ADD CONSTRAINT "Follow_userIdFollow_fkey" FOREIGN KEY ("userIdFollow") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3295 (class 2606 OID 33432)
+-- Name: Follow Follow_userIdFollowed_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Follow"
+    ADD CONSTRAINT "Follow_userIdFollowed_fkey" FOREIGN KEY ("userIdFollowed") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3296 (class 2606 OID 33459)
+-- Name: IngredientSeason IngredientSeason_ingredientId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."IngredientSeason"
+    ADD CONSTRAINT "IngredientSeason_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES public."Ingredient"("ingredientId");
+
+
+--
+-- TOC entry 3297 (class 2606 OID 33464)
+-- Name: IngredientSeason IngredientSeason_seasonId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."IngredientSeason"
+    ADD CONSTRAINT "IngredientSeason_seasonId_fkey" FOREIGN KEY ("seasonId") REFERENCES public."Season"("seasonId");
+
+
+--
+-- TOC entry 3298 (class 2606 OID 33476)
+-- Name: Month Month_seasonId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Month"
+    ADD CONSTRAINT "Month_seasonId_fkey" FOREIGN KEY ("seasonId") REFERENCES public."Season"("seasonId");
+
+
+--
+-- TOC entry 3289 (class 2606 OID 33387)
+-- Name: RecipeList RecipeList_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."RecipeList"
+    ADD CONSTRAINT "RecipeList_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3284 (class 2606 OID 33324)
+-- Name: Recipe Recipe_userId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe"
+    ADD CONSTRAINT "Recipe_userId_fkey" FOREIGN KEY ("userId") REFERENCES public."User"("userId");
+
+
+--
+-- TOC entry 3299 (class 2606 OID 33490)
+-- Name: Step Step_recipeId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Step"
+    ADD CONSTRAINT "Step_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES public."Recipe"("recipeId");
+
+
+-- Completed on 2023-02-19 09:13:50
+
+--
+-- PostgreSQL database dump complete
+--
+
