@@ -48,16 +48,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     avatar: DataTypes.STRING,
-    currentLocation: DataTypes.STRING,
-    latitude: DataTypes.DOUBLE,
-    longtitude: DataTypes.DOUBLE,
-    locationLastUpdated: {
-      type: DataTypes.DATE,
-      get: function() {
-        return formatDate(this.getDataValue('locationLastUpdated'))
-      }
-    },
-
   }, {
     sequelize,
     freezeTableName: true,

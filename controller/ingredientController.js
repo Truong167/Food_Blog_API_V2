@@ -6,6 +6,36 @@ const { Op } = sequelize
 
 
 class ingredientController {
+
+    handleGetAllIngredient = async (req, res) => {
+        try {
+            let ingredient = await db.Ingredient.findAll()
+            if(ingredient && ingredient.length > 0) {
+                ingredient = ingredient.map(item => {
+                    item.dataValues.id = item.dataValues.ingredientId
+                    delete item.dataValues['ingredientId']
+                    return item
+                })
+                res.status(200).json({
+                    success: true, 
+                    message: 'Successfully get data', 
+                    data: ingredient
+                })
+                return
+            }
+            res.status(400).json({
+                success: false, 
+                message: 'Ingredient not found',
+                data: ""
+            })
+        } catch (error) {
+            res.status(500).json({
+                success: false, 
+                message: error.message,
+                data: ""
+            })
+        }
+    }
     
     handleSearchIngredient = async (req, res) => {
 

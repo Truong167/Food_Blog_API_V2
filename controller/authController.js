@@ -139,7 +139,7 @@ class authController {
             })
             const pass = await bcrypt.compare(password, account.password)
             if(!pass)
-            return  res.status(425).json({
+            return res.status(425).json({
                 success: false,
                 message: 'Password do not match',
                 data: ""

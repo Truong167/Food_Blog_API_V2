@@ -18,10 +18,7 @@ module.exports = {
         allowNull: false
       },
       status: {
-        type: Sequelize.STRING(5),
-        validate: {
-          isIn: [['RT', 'CK']],
-        },
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       amount: {
@@ -79,14 +76,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     }).
-
-    then(() => queryInterface.addConstraint('Recipe', {
-      fields: ['status'],
-      type: 'check',
-      where: {
-        status: ['RT', 'CK']
-      }
-    })).
 
     then(() => queryInterface.addConstraint('Recipe', {
       fields: ['amount'],
