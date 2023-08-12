@@ -18,13 +18,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Comment.init({
+    commentId: {
+      primaryKey: true,
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+    },
     userId: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
     },
     recipeId: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
     },
     date: {
       type: DataTypes.DATE,

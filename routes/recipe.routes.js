@@ -14,8 +14,8 @@ router.get('/getRecipeByIngredient/:slug', recipeController.getRecipeByIngredien
 router.get('/getPopularRecipe', recipeController.getPopularRecipe)
 router.get('/getRecipeFromFollowers', recipeController.getRecipeFromFollowers)
 router.get('/getRecipeByName/:slug', recipeController.handleGetRecipeByName)
-router.get('/getRecipeByUserId', recipeController.getRecipeByUserId)
-router.get('/getRecipeByUserId1/:userId', recipeController.getRecipeByUserId1)
+router.get('/getMyRecipe', recipeController.getMyRecipe)
+router.get('/getRecipeByUserId/:userId', recipeController.getRecipeByUserId)
 router.get('/getRecipeFavorite', recipeController.getRecipeFavorite)
 
 

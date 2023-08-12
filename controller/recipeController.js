@@ -2,7 +2,7 @@ const db = require("../models");
 const { sequelize } = require("../models/index");
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
-let multerConfig = require("../middlewares/utils/multerConfig");
+const { deleteSingleFile } = require("../middlewares/utils/deleteFiles");
 require("dotenv").config();
 
 class recipeController {
@@ -23,8 +23,8 @@ class recipeController {
               "userId",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                                then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -95,6 +95,7 @@ class recipeController {
       image,
       video,
     } = req.body;
+    console.log(req.body)
     if (
       !recipeName ||
       !amount ||
@@ -102,7 +103,8 @@ class recipeController {
       !cookingTime ||
       !status ||
       !DetailIngredients ||
-      !Steps
+      !Steps ||
+      !image
     ) {
       res.status(418).json({
         status: false,
@@ -113,9 +115,6 @@ class recipeController {
     }
 
     try {
-      console.log(req.body);
-      // DetailIngredients = JSON.parse(DetailIngredients)
-      // Steps = JSON.parse(Steps)
       let userId = req.userId;
       const result = await sequelize.transaction(async (t) => {
         let recipe = await db.Recipe.create(
@@ -183,7 +182,8 @@ class recipeController {
         !cookingTime ||
         !status ||
         !DetailIngredients ||
-        !Steps
+        !Steps ||
+        !image
       ) {
         res.status(418).json({
           status: false,
@@ -215,16 +215,17 @@ class recipeController {
       });
       let index = 0;
       console.log(req.files);
-      Steps.map(item => {
-        item.recipeId = recipeId
-        return item
-      })
+      Steps.map((item) => {
+        item.recipeId = recipeId;
+        return item;
+      });
       DetailIngredients = DetailIngredients.map((item) => {
         item.recipeId = recipeId;
         return item;
       });
       console.log("Steps1: ", Steps);
       if (recipe) {
+        console.log("image", image, "recipe", recipe.image);
         const updateRecipe = await sequelize.transaction(async (t) => {
           if (step.length > 0) {
             await db.Step.destroy(
@@ -299,15 +300,25 @@ class recipeController {
               { transaction: t }
             );
           }
-          console.log("allala");
+          let recipeImage = "";
+          let recipeVideo = "";
+          if (image !== recipe.image && recipe.image) {
+            // deleteSingleFile(recipe.image);
+            recipeImage = image;
+          }
+
+          if (video !== recipe.video && recipe.video) {
+            // deleteSingleFile(recipe.video);
+            recipeVideo = video;
+          }
           recipe.recipeName = recipeName;
           recipe.amount = amount;
           recipe.preparationTime = preparationTime;
           recipe.cookingTime = cookingTime;
           recipe.status = status;
           recipe.description = description;
-          recipe.image = image
-          recipe.video = video
+          recipe.image = recipeImage ? recipeImage : image;
+          recipe.video = recipeVideo ? recipeVideo : video;
 
           await recipe.save({ transaction: t });
 
@@ -408,8 +419,8 @@ class recipeController {
               "address",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                                then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -443,23 +454,6 @@ class recipeController {
           ],
         },
       });
-
-      recipe.dataValues.Steps.map((item) => {
-        item.dataValues.image = item.dataValues.image
-          ? {
-              url: process.env.URL + item.dataValues.image,
-              id: item.dataValues.image,
-            }
-          : null;
-      });
-      recipe.dataValues.video = {
-        url: process.env.URL + recipe.dataValues.video,
-        id: recipe.dataValues.video,
-      };
-      recipe.dataValues.image = {
-        url: process.env.URL + recipe.dataValues.image,
-        id: recipe.dataValues.image,
-      };
 
       recipe.dataValues.Steps.sort((x, y) => {
         return x.stepIndex - y.stepIndex;
@@ -604,8 +598,8 @@ class recipeController {
               "userId",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                                then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -620,6 +614,7 @@ class recipeController {
           },
         ],
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -628,14 +623,19 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
       });
       if (recipe && recipe.length > 0) {
         recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
           item.dataValues.DetailLists.map((item) => {
             item.dataValues.name = item.dataValues.RecipeList.dataValues.name;
             delete item.dataValues["RecipeList"];
@@ -695,8 +695,8 @@ class recipeController {
               "userId",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                                then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -711,6 +711,7 @@ class recipeController {
           },
         ],
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -720,8 +721,8 @@ class recipeController {
           [sequelize.fn("COUNT", sequelize.col("Comments.recipeId")), "count"],
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
@@ -742,6 +743,11 @@ class recipeController {
       });
       if (recipe && recipe.length > 0) {
         recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
           item.dataValues.DetailLists.map((item) => {
             item.dataValues.name = item.dataValues.RecipeList.dataValues.name;
             delete item.dataValues["RecipeList"];
@@ -812,8 +818,8 @@ class recipeController {
               "userId",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                                then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -828,6 +834,7 @@ class recipeController {
           },
         ],
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -836,8 +843,8 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                            (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                            THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
@@ -845,6 +852,11 @@ class recipeController {
       });
       if (recipe && recipe.length > 0) {
         recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
           item.dataValues.DetailLists.map((item) => {
             item.dataValues.name = item.dataValues.RecipeList.dataValues.name;
             delete item.dataValues["RecipeList"];
@@ -885,8 +897,8 @@ class recipeController {
             "userId",
             [
               sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                        (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                        then True else False end isFollow) `),
+                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                then True else False end isFollow) `),
               "isFollow",
             ],
           ],
@@ -901,8 +913,8 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
@@ -931,7 +943,7 @@ class recipeController {
     }
   };
 
-  getRecipeByUserId = async (req, res) => {
+  getMyRecipe = async (req, res) => {
     try {
       const userId = req.userId;
       const recipe = await db.Recipe.findAll({
@@ -940,6 +952,7 @@ class recipeController {
         },
         order: [["date", "DESC"]],
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -948,8 +961,8 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
@@ -962,11 +975,24 @@ class recipeController {
             },
             attributes: ["recipeListId"],
           },
+          {
+            model: db.User,
+            attributes: [
+              "fullName",
+              "avatar",
+              "userId",
+            ],
+          },
         ],
       });
       const user = await db.User.findByPk(userId);
       if (recipe && recipe.length > 0) {
         recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
           item.dataValues.DetailLists.map((item) => {
             item.dataValues.name = item.dataValues.RecipeList.dataValues.name;
             delete item.dataValues["RecipeList"];
@@ -996,7 +1022,7 @@ class recipeController {
     }
   };
 
-  getRecipeByUserId1 = async (req, res) => {
+  getRecipeByUserId = async (req, res) => {
     try {
       const userId = req.params.userId;
       const userId1 = req.userId;
@@ -1013,6 +1039,7 @@ class recipeController {
         },
         order: [["date", "DESC"]],
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -1021,8 +1048,8 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId1}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId1}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
@@ -1043,8 +1070,8 @@ class recipeController {
               "userId",
               [
                 sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                            (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId1}) 
-                            then True else False end isFollow) `),
+                  (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId1}) 
+                  then True else False end isFollow) `),
                 "isFollow",
               ],
             ],
@@ -1054,6 +1081,11 @@ class recipeController {
       const user = await db.User.findByPk(userId);
       if (recipe && recipe.length > 0) {
         recipe.map((item) => {
+          if(item.dataValues.userId === userId1) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
           item.dataValues.DetailLists.map((item) => {
             item.dataValues.name = item.dataValues.RecipeList.dataValues.name;
             delete item.dataValues["RecipeList"];
@@ -1072,7 +1104,7 @@ class recipeController {
       res.status(432).json({
         success: true,
         message: "Recipe not found",
-        data: recipe,
+        data: '',
       });
     } catch (error) {
       res.status(500).json({
@@ -1097,13 +1129,14 @@ class recipeController {
             "userId",
             [
               sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                            (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                            then True else False end isFollow) `),
+                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                then True else False end isFollow) `),
               "isFollow",
             ],
           ],
         },
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
@@ -1112,19 +1145,33 @@ class recipeController {
           "status",
           [
             sequelize.literal(`(SELECT CASE WHEN EXISTS 
-                        (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
-                        THEN True ELSE False end isFavorite) `),
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
             "isFavorite",
           ],
         ],
         where: {
-          recipeName: {
-            [Op.iLike]: `%${q}%`,
-          },
+          [Op.and]: [
+            {
+              recipeName: {
+                [Op.iLike]: `%${q}%`,
+              },
+            },
+            {
+              status: "CK",
+            },
+          ],
         },
       });
 
       if (recipe && recipe.length > 0) {
+        recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
+        });
         res.status(200).json({
           success: true,
           message: "Successfully search",
@@ -1171,22 +1218,36 @@ class recipeController {
             "avatar",
             [
               sequelize.literal(` (SELECT CASE WHEN EXISTS 
-                            (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
-                            then True else False end isFollow) `),
+                (Select * from "Follow" where "userIdFollowed" = "User"."userId" and "userIdFollow" = ${userId}) 
+                then True else False end isFollow) `),
               "isFollow",
             ],
           ],
         },
         attributes: [
+          "userId",
           "recipeId",
           "recipeName",
           "date",
           "numberOfLikes",
           "image",
           "status",
+          [
+            sequelize.literal(`(SELECT CASE WHEN EXISTS 
+              (SELECT * FROM "Favorite" WHERE "recipeId" = "Recipe"."recipeId" and "userId" = ${userId}) 
+              THEN True ELSE False end isFavorite) `),
+            "isFavorite",
+          ],
         ],
       });
       if (recipe && recipe.length > 0) {
+        recipe.map((item) => {
+          if(item.dataValues.userId === userId) {
+            item.dataValues.isMyRecipe = true
+          } else {
+            item.dataValues.isMyRecipe = false
+          }
+        });
         res.status(200).json({
           success: true,
           message: "Successfully search",

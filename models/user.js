@@ -34,9 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     fullName: DataTypes.STRING,
     dateOfBirth: {
       type: DataTypes.DATE,
-      get: function() {
-        return formatDate(this.getDataValue('dateOfBirth'))
-      }
+      // get: function() {
+      //   return formatDate(this.getDataValue('dateOfBirth'))
+      // }
     },
     address: DataTypes.STRING,
     email: DataTypes.STRING,
