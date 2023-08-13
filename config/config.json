@@ -1,9 +1,9 @@
 {
     "development": {
       "username": "postgres",
-      "password": "2711",
-      "database": "foodblog",
-      "host": "127.0.0.1",
+      "password": "vuviettruong2711",
+      "database": "postgres",
+      "host": "db.ddclwyogrhhqtqfxieyr.supabase.co",
       "dialect": "postgres",
       "dialectOptions": {
         "useUTC": false 
@@ -19,9 +19,9 @@
     },
     "production": {
       "username": "postgres",
-      "password": "2711",
-      "database": "foodblog",
-      "host": "127.0.0.1",
+      "password": "vuviettruong2711",
+      "database": "postgres",
+      "host": "db.ddclwyogrhhqtqfxieyr.supabase.co",
       "dialect": "postgres"
     }
   }

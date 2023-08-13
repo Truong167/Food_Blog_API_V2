@@ -15,7 +15,6 @@ class favoriteController {
                 userId: userId,
                 recipeId: recipeId,
             }})
-            console.log(checkFavorite)
             if(recipe && !checkFavorite) {
                 let favorite = await db.Favorite.create({
                     userId: userId,

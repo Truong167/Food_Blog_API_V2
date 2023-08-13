@@ -10,8 +10,8 @@ router.get('/', commentController.index)
 router.get('/getCommentOfRecipe/:recipeId', commentController.getCommentOfRecipe)
 
 router.post('/createComment/:recipeId', commentController.handleCreateComment)
-router.put('/updateComment/:recipeId', commentController.handleUpdateComment)
-router.delete('/deleteComment/:recipeId', commentController.handleDeleteComment)
+router.put('/updateComment/:commentId', commentController.handleUpdateComment)
+router.delete('/deleteComment/:commentId', commentController.handleDeleteComment)
 
 
 module.exports = router

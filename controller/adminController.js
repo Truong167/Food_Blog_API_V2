@@ -244,7 +244,6 @@ class adminController {
                     item.ingredientId = ingredientId
                     return item
                 })
-                console.log(req.body)
                 let ingredient = await db.Ingredient.findByPk(ingredientId)
                 if(ingredient){
                     const updateIngredient = await sequelize.transaction(async t => {

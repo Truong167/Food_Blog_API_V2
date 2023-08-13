@@ -220,10 +220,6 @@ class authController {
             let expireTime = moment(checkOtp.duration, dateFormat).toDate()
             let currentTime = formatDate(currentTime1)
             let temp = moment(currentTime, dateFormat).toDate()
-            console.log(checkOtp.duration)
-            console.log(currentTime)
-            console.log(expireTime)
-            console.log(temp)
             if (temp.getTime() > expireTime.getTime()) {
                 return res.status(451).json({
                     success: false,
@@ -323,10 +319,6 @@ class authController {
                 let expireTime = moment(checkOtp.duration, dateFormat).toDate()
                 let currentTime = formatDate(currentTime1)
                 let temp = moment(currentTime, dateFormat).toDate()
-                console.log(checkOtp.duration)
-                console.log(currentTime)
-                console.log(expireTime)
-                console.log(temp)
                 if (temp.getTime() > expireTime.getTime()) {
                     return res.status(451).json({
                         success: false,

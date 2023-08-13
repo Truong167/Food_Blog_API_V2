@@ -51,13 +51,13 @@ module.exports = {
         defaultValue: 0
       },
       image: {
-        type: Sequelize.STRING(128),
+        type: Sequelize.STRING(300),
       },
       description: {
         type: Sequelize.STRING(128)
       },
       video: {
-        type: Sequelize.STRING(256)
+        type: Sequelize.STRING(300)
       },
       userId: {
         type: Sequelize.INTEGER,

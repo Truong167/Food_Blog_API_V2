@@ -364,7 +364,6 @@ class recipeListController {
         try {
             let {userId} = req
             let {recipeListId} = req.params
-            console.log(recipeListId)
             let dt = await db.DetailList.findAll({
                 where: {
                     recipeListId: recipeListId

@@ -10,10 +10,8 @@ class stepController {
 
     handleDeleteStep = async (req, res) => {
         let {recipeId, stepId } = req.params
-        console.log(req.params)
         try {
             let step = await db.Step.findOne({where: {recipeId: recipeId, stepId: stepId}})
-            console.log(step)
         } catch (error) {
             
         }

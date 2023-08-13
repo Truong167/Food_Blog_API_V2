@@ -81,7 +81,6 @@ class commentController {
       let { recipeId } = req.params;
       let userId = req.userId;
       let { comment } = req.body;
-      console.log("Comment nè", comment);
       if (!comment) {
         return res.status(400).json({
           success: false,
@@ -90,15 +89,6 @@ class commentController {
         });
       }
       let recipe = await db.Recipe.findByPk(recipeId);
-      // let checkComment = await db.Comment.findOne({where: {userId: userId, recipeId: recipeId}})
-      // if(checkComment){
-      //     res.status(437).json({
-      //         success: false,
-      //         message: 'Users are only allowed to comment once per recipe',
-      //         data: ""
-      //     })
-      //     return
-      // }
       if (recipe) {
         let commentData = await db.Comment.create({
           userId: userId,
@@ -129,12 +119,9 @@ class commentController {
 
   handleUpdateComment = async (req, res) => {
     try {
-      let { recipeId } = req.params;
-      let userId = req.userId;
+      let { commentId } = req.params;
       let { comment } = req.body;
-      let commentData = await db.Comment.findOne({
-        where: { userId: userId, recipeId: recipeId },
-      });
+      let commentData = await db.Comment.findByPk(commentId);
       if (commentData) {
         commentData.comment = comment;
         let data = await commentData.save();
@@ -161,11 +148,9 @@ class commentController {
 
   handleDeleteComment = async (req, res) => {
     try {
-      let { recipeId } = req.params;
+      let { commentId } = req.params;
       let userId = req.userId;
-      let comment = await db.Comment.findOne({
-        where: { userId: userId, recipeId: recipeId },
-      });
+      let comment = await db.Comment.findByPk(commentId)
       if (comment) {
         let commentData = await comment.destroy();
         res.status(200).json({

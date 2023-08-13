@@ -95,7 +95,6 @@ class recipeController {
       image,
       video,
     } = req.body;
-    console.log(req.body)
     if (
       !recipeName ||
       !amount ||
@@ -213,8 +212,6 @@ class recipeController {
       ingredient = ingredient.map((item) => {
         return item.dataValues.ingredientId;
       });
-      let index = 0;
-      console.log(req.files);
       Steps.map((item) => {
         item.recipeId = recipeId;
         return item;
@@ -223,9 +220,7 @@ class recipeController {
         item.recipeId = recipeId;
         return item;
       });
-      console.log("Steps1: ", Steps);
       if (recipe) {
-        console.log("image", image, "recipe", recipe.image);
         const updateRecipe = await sequelize.transaction(async (t) => {
           if (step.length > 0) {
             await db.Step.destroy(
@@ -514,10 +509,11 @@ class recipeController {
       });
 
       if (recipe && recipe.length > 0) {
+        const uniqueArr = [...new Set(recipe.map(item => item.dataValues.recipeName))].map(recipeName => ({recipeName}));
         res.status(200).json({
           success: true,
           message: "Successfully search",
-          data: recipe,
+          data: uniqueArr,
         });
         return;
       }
@@ -540,8 +536,6 @@ class recipeController {
     try {
       let { id } = req.params;
       let { status } = req.body;
-      console.log(status);
-      console.log(req.body);
       let recipe = await db.Recipe.findByPk(id);
 
       if (recipe) {
