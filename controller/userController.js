@@ -40,6 +40,7 @@ class userController {
               "isFollow",
             ],
             [
+              
               sequelize.literal(
                 ` (Select count(*) from "Recipe" where "userId" = ${id}) `
               ),

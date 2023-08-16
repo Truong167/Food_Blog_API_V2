@@ -8,6 +8,7 @@ class mediaController {
     uploadMeidaFile = (req, res) => {
         let uploadFile = uploadCloud.single('file')
         uploadFile(req, res, error => {
+            console.log(error)
             if(error) {
                 return res.status(440).json({
                     success: false, 

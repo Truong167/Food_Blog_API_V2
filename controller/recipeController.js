@@ -993,7 +993,6 @@ class recipeController {
             return item;
           });
         });
-        const newData = { user, recipe };
         res.status(200).json({
           success: true,
           message: "Successfully get data",
@@ -1005,7 +1004,7 @@ class recipeController {
       res.status(432).json({
         success: true,
         message: "Recipe not found",
-        data: recipe,
+        data: '',
       });
     } catch (error) {
       res.status(500).json({

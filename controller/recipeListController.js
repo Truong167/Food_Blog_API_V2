@@ -225,49 +225,12 @@ class recipeListController {
 
     }
 
-    handleCreateRecipe = async (req, res) => {
-        try {
-            let { recipeListId, recipeId } = req.params
-            let recipe = await db.Recipe.findByPk(recipeId)
-            let dtRecipe = await db.DetailList.findOne({where: {recipeListId: recipeListId, recipeId: recipeId}})
-            if(!recipe) {
-                res.status(432).json({
-                    success: false,
-                    message: 'Recipe not found',
-                    data: ""
-                })
-            } else if(dtRecipe) {
-                res.status(443).json({
-                    success: false,
-                    message: 'Recipe is exist in recipe list',
-                    data: ""
-                })
-            } else {
-                let detailList = await db.DetailList.create({
-                    recipeListId: recipeListId,
-                    recipeId: recipeId,
-                    date: Date.now()
-                })
-                res.status(200).json({
-                    success: true, 
-                    message: 'Recipe created successfully',
-                    data: detailList
-                })
-            }
-
-        } catch (error) {
-            res.status(500).json({
-                success: false, 
-                message: error,
-                data: ""
-            })
-        }
-    }
     
-    handleCreateRecipe1 = async (req, res) => {
+    handleCreateRecipe = async (req, res) => {
         try {
             let { recipeId } = req.params
             let {recipeListDetail} = req.body
+            console.log(req.body)
             let recipe = await db.Recipe.findByPk(recipeId)
             let dtList = await db.DetailList.findAll({where: { recipeId: recipeId }})
 
@@ -461,12 +424,18 @@ class recipeListController {
 
             })
             if(recipeList.length > 0){
-                res.status(200).json({
+                return res.status(200).json({
                     success: true,
                     message: 'Successfully get data',
                     data: recipeList
                 })
             }
+
+            return res.status(400).json({
+                success: false,
+                message: 'No data',
+                data: ''
+            })
         } catch (error) {
             res.status(500).json({
                 success: false, 
