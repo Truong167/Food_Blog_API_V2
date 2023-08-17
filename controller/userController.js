@@ -29,6 +29,7 @@ class userController {
     try {
       let { userId } = req;
       let { id } = req.params;
+      console.log(typeof id, typeof userId)
       let user = await db.User.findByPk(id, {
         attributes: {
           exclude: ["dateUpdatedRecipe", "createdAt", "updatedAt"],
@@ -39,13 +40,21 @@ class userController {
                         then True else False end isFollow) `),
               "isFollow",
             ],
+            (userId === parseInt(id) ?
             [
-              
               sequelize.literal(
                 ` (Select count(*) from "Recipe" where "userId" = ${id}) `
               ),
               "countRecipe",
-            ],
+            ]
+            :
+            [
+              sequelize.literal(
+                ` (Select count(*) from "Recipe" where "userId" = ${id} and "status" = 'CK') `
+              ),
+              "countRecipe",
+            ])
+            ,
             [
               sequelize.literal(
                 ` (Select count(*) from "Follow" where "userIdFollow" = ${id}) `

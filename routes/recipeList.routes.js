@@ -14,7 +14,6 @@ router.get("/getRecipe/:recipeListId", recipeListController.getRecipe)
 router.get("/getBookmarkList/:recipeId", recipeListController.getBookmarkList)
 
 router.post('/createRecipeList', recipeListController.handleCreateRecipeList)
-router.post('/createRecipeList1', recipeListController.handleCreateRecipeList1)
 router.post('/createRecipe/:recipeId', recipeListController.handleCreateRecipe)
 router.put('/updateRecipeList/:id', recipeListController.handleUpdateRecipeList)
 router.delete('/deleteRecipe/:recipeListId/:recipeId', recipeListController.handleDeleteRecipe)

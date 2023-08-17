@@ -4,7 +4,7 @@ const routes = require('./routes/index.routes')
 const connectDb = require('./config/connectDb')
 const cors = require('cors')
 const path = require('path')
-require('dotenv').config()
+// require('dotenv').config()
 
 
 const PORT = process.env.PORT || 7070
