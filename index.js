@@ -4,7 +4,7 @@ const routes = require('./routes/index.routes')
 const connectDb = require('./config/connectDb')
 const cors = require('cors')
 const path = require('path')
-// require('dotenv').config()
+require('dotenv').config()
 
 
 const PORT = process.env.PORT || 7070
@@ -17,11 +17,10 @@ app.use(cors({
     origin: '*',
 }));
 
-app.get("/", (req, res) => {
-  res.redirect("/swagger-ui/dist/index.html")
-})
 
 routes(app)
+
+console.log(Date.now())
 
 
 connectDb()

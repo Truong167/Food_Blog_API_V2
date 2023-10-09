@@ -1,8 +1,8 @@
+const { RECIPE_NAME_BLANK_ERROR, AMOUNT_BLANK_ERROR, PREPARATION_TIME_BLANK_ERROR, COOKING_TIME_BLANK_ERROR, STATUS_BLANK_ERROR, IMAGE_BLANK_ERROR, INGREDIENT_BLANK_ERROR, STEP_BLANK_ERROR, INTERNAL_ERROR } = require("../contants/error-code");
 const db = require("../models");
 const { sequelize } = require("../models/index");
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
-const { deleteSingleFile } = require("../middlewares/utils/deleteFiles");
 require("dotenv").config();
 
 class recipeController {
@@ -95,22 +95,69 @@ class recipeController {
       image,
       video,
     } = req.body;
-    if (
-      !recipeName ||
-      !amount ||
-      !preparationTime ||
-      !cookingTime ||
-      !status ||
-      !DetailIngredients ||
-      !Steps ||
-      !image
-    ) {
-      res.status(418).json({
+
+    if(!recipeName) {
+      return res.status(418).json({
         status: false,
-        message: "Please provide all required fields",
+        message: RECIPE_NAME_BLANK_ERROR,
         data: "",
       });
-      return;
+    }
+
+    if(!amount) {
+      return res.status(418).json({
+        status: false,
+        message: AMOUNT_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!preparationTime) {
+      return res.status(418).json({
+        status: false,
+        message: PREPARATION_TIME_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!cookingTime) {
+      return res.status(418).json({
+        status: false,
+        message: COOKING_TIME_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!status) {
+      return res.status(418).json({
+        status: false,
+        message: STATUS_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!image) {
+      return res.status(418).json({
+        status: false,
+        message: IMAGE_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!DetailIngredients) {
+      return res.status(418).json({
+        status: false,
+        message: INGREDIENT_BLANK_ERROR,
+        data: "",
+      });
+    }
+
+    if(!Steps) {
+      return res.status(418).json({
+        status: false,
+        message: STEP_BLANK_ERROR,
+        data: "",
+      });
     }
 
     try {
@@ -148,13 +195,13 @@ class recipeController {
       });
       res.status(200).json({
         success: true,
-        message: "Successfully added",
+        message: SUCCESS_CREATE_RECIPE,
         data: result,
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: error,
+        message: INTERNAL_ERROR,
         data: "",
       });
     }
