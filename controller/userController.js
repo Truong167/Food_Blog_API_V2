@@ -104,6 +104,9 @@ class userController {
       });
       return;
     }
+
+    console.log(dateOfBirth)
+
     const emailCheck = await checkEmailExists(email, userId);
     if (emailCheck) {
       res.status(422).json({
@@ -116,7 +119,6 @@ class userController {
 
     try {
       let user = await db.User.findByPk(userId);
-      let oldImage = user.avatar;
       if (user) {
         user.fullName = fullName;
         user.dateOfBirth = dateOfBirth;

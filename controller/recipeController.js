@@ -1,4 +1,15 @@
-const { RECIPE_NAME_BLANK_ERROR, AMOUNT_BLANK_ERROR, PREPARATION_TIME_BLANK_ERROR, COOKING_TIME_BLANK_ERROR, STATUS_BLANK_ERROR, IMAGE_BLANK_ERROR, INGREDIENT_BLANK_ERROR, STEP_BLANK_ERROR, INTERNAL_ERROR } = require("../contants/error-code");
+const { 
+  RECIPE_NAME_BLANK_ERROR, 
+  AMOUNT_BLANK_ERROR, 
+  PREPARATION_TIME_BLANK_ERROR, 
+  COOKING_TIME_BLANK_ERROR, 
+  STATUS_BLANK_ERROR, 
+  IMAGE_BLANK_ERROR, 
+  INGREDIENT_BLANK_ERROR, 
+  STEP_BLANK_ERROR, 
+  INTERNAL_ERROR,
+  SUCCESS_CREATE_RECIPE
+} = require("../contants/error-code");
 const db = require("../models");
 const { sequelize } = require("../models/index");
 const Sequelize = require("sequelize");
@@ -345,12 +356,10 @@ class recipeController {
           let recipeImage = "";
           let recipeVideo = "";
           if (image !== recipe.image && recipe.image) {
-            // deleteSingleFile(recipe.image);
             recipeImage = image;
           }
 
           if (video !== recipe.video && recipe.video) {
-            // deleteSingleFile(recipe.video);
             recipeVideo = video;
           }
           recipe.recipeName = recipeName;

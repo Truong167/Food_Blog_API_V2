@@ -227,11 +227,14 @@ class authController {
   };
 
   handleChangePassword = async (req, res) => {
-    let { accountName, newPassword, checkPassword, otp } = req.body;
+    let {userId} = req
+    let { oldPassword, newPassword, checkPassword } = req.body;
     try {
-      const currentTime1 = new Date();
-      let account = await db.Account.findByPk(accountName);
-
+      let account = await db.Account.findOne({
+        where: {
+          userId: userId
+        }
+      });
       if (!account) {
         return res.status(424).json({
           success: false,
@@ -239,8 +242,14 @@ class authController {
           data: "",
         });
       }
-      let user = await db.User.findByPk(account.userId);
-      let checkOtp = await db.Otp.findByPk(user.email);
+      const pass = await bcrypt.compare(oldPassword, account.password);
+      if (!pass)
+        return res.status(425).json({
+          success: false,
+          message: WRONG_PASSWORD_ERROR,
+          data: "",
+        });
+
       if (!validatePassword(newPassword)) {
         return res.status(420).json({
           success: false,
@@ -256,37 +265,7 @@ class authController {
           data: "",
         });
       }
-      // if (!bcrypt.compareSync(otp, checkOtp.value))
-      //     return res.status(450).json({
-      //         success: false,
-      //         message: 'Incorrect OTP',
-      //         data: ""
-      //     })
-      if (!checkOtp)
-        return res.status(449).json({
-          success: false,
-          message: "Invalid OTP",
-          data: "",
-        });
-      if (otp !== checkOtp.value) {
-        return res.status(450).json({
-          success: false,
-          message: "Incorrect OTP",
-          data: "",
-        });
-      }
 
-      let dateFormat = "DD-MM-YYYY HH:mm:ss";
-      let expireTime = moment(checkOtp.duration, dateFormat).toDate();
-      let currentTime = formatDate(currentTime1);
-      let temp = moment(currentTime, dateFormat).toDate();
-      if (temp.getTime() > expireTime.getTime()) {
-        return res.status(451).json({
-          success: false,
-          message: "OTP expired",
-          data: "",
-        });
-      }
 
       account.password = bcrypt.hashSync(newPassword, 10);
       await account.save();

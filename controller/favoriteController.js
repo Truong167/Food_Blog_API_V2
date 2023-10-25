@@ -63,11 +63,6 @@ class favoriteController {
             let recipe = await db.Recipe.findByPk(recipeId)
             if(favorite) {
                 await favorite.destroy()
-                res.status(200).json({
-                    success: true, 
-                    message: 'Successfully',
-                    data: "",
-                })
                 let count = await db.Favorite.count({
                     where: {
                         recipeId: recipeId
@@ -75,6 +70,11 @@ class favoriteController {
                 })
                 recipe.numberOfLikes = count
                 await recipe.save()
+                res.status(200).json({
+                    success: true, 
+                    message: 'Successfully delete',
+                    data: "",
+                })
             } else if(!recipe) {
                 res.status(432).json({
                     success: false, 
