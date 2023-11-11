@@ -20,7 +20,6 @@ app.use(cors({
 
 routes(app)
 
-console.log(Date.now())
 
 
 connectDb()

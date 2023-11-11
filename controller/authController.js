@@ -156,6 +156,8 @@ class authController {
         return user;
       });
 
+      
+
       // const accessToken = jwt.sign({userId: result.user.userId}, process.env.ACCESS_TOKEN_SECRET)
 
       res.status(201).json({
@@ -166,7 +168,7 @@ class authController {
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: INTERNAL_ERROR,
+        message: INTERNAL_ERROR + error.message,
         data: "",
       });
     }
@@ -174,7 +176,6 @@ class authController {
 
   handleLogin = async (req, res) => {
     const { accountName, password } = req.body;
-
     if (!accountName) {
       return res.status(418).json({
         success: false,

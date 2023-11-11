@@ -1,4 +1,6 @@
 
+const { INGREDIENT_NOT_FOUND, SUCCES_SEARCH } = require('../contants/error-code/ingredient')
+const { SUCCESS_GET_DATA } = require('../contants/error-code/user')
 const db = require('../models/index')
 const sequelize = require('sequelize')
 
@@ -18,14 +20,14 @@ class ingredientController {
                 })
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully get data', 
+                    message: SUCCESS_GET_DATA, 
                     data: ingredient
                 })
                 return
             }
             res.status(400).json({
                 success: false, 
-                message: 'Ingredient not found',
+                message: INGREDIENT_NOT_FOUND,
                 data: ""
             })
         } catch (error) {
@@ -54,14 +56,14 @@ class ingredientController {
             if(ingredient && ingredient.length > 0) {
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully search', 
+                    message: SUCCES_SEARCH, 
                     data: ingredient
                 })
                 return
             }
             res.status(400).json({
                 success: false, 
-                message: 'Ingredient not found',
+                message: INGREDIENT_NOT_FOUND,
                 data: ""
             })
             
@@ -100,14 +102,14 @@ class ingredientController {
             if(ingredient && ingredient.length > 0){
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully get data',
+                    message: SUCCESS_GET_DATA,
                     data: ingredient
                 })
                 return
             }
             res.status(427).json({
                 success: false, 
-                message: 'Ingredient not found',
+                message: INGREDIENT_NOT_FOUND,
                 data: ""
             })
         } catch (error) {

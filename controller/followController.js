@@ -1,4 +1,6 @@
 
+const { CHECK_FOLLOWED, SUCCESS_FOLLOW, UNFOLLOW } = require('../contants/error-code/follow')
+const { USER_NOT_FOUND } = require('../contants/error-code/user')
 const db = require('../models/index')
 
 class followController {
@@ -14,7 +16,7 @@ class followController {
             if(check) {
                 res.status(446).json({
                     success: false,
-                    message: `User has followed this user`,
+                    message: CHECK_FOLLOWED,
                     data: ''
                 })
             }
@@ -26,13 +28,13 @@ class followController {
                 })
                 res.status(200).json({
                     success: true,
-                    message: 'Successfully',
+                    message: SUCCESS_FOLLOW,
                     data: follow
                 })
             } else {
                 res.status(426).json({
                     success: false, 
-                    message: 'User not found',
+                    message: USER_NOT_FOUND,
                     data: ""
                 })
             }
@@ -58,7 +60,7 @@ class followController {
                 let followData = await follow.destroy()
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully',
+                    message: UNFOLLOW,
                     data: followData
                 })
                 return
@@ -90,7 +92,7 @@ class followController {
                 let followData = await follow.destroy()
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully',
+                    message: UNFOLLOW,
                     data: followData
                 })
                 return

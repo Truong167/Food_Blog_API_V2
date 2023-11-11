@@ -1,3 +1,6 @@
+const { COMMENT_NOT_FOUND, SUCCESS_ADD_COMMENT, SUCCESS_UPDATE_COMMENT, SUCCESS_DELETE_COMMENT } = require("../contants/error-code/comment");
+const { RECIPE_NOT_FOUND } = require("../contants/error-code/recipe");
+const { SUCCESS_GET_DATA, BLANK_FIELDS } = require("../contants/error-code/user");
 const { sequelize } = require("../models/index");
 
 const db = require("../models/index");
@@ -50,13 +53,13 @@ class commentController {
           let newData = { comment, commentCount: commentCount, myComment };
           return res.status(200).json({
             success: true,
-            message: "Successfully get data",
+            message: SUCCESS_GET_DATA,
             data: newData,
           });
         } else {
           return res.status(438).json({
             success: false,
-            message: "Do not have comment with this recipe",
+            message: COMMENT_NOT_FOUND,
             data: "",
           });
         }
@@ -64,7 +67,7 @@ class commentController {
 
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -84,7 +87,7 @@ class commentController {
       if (!comment) {
         return res.status(400).json({
           success: false,
-          message: "Please provide field",
+          message: BLANK_FIELDS,
           data: "",
         });
       }
@@ -98,14 +101,14 @@ class commentController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully added",
+          message: SUCCESS_ADD_COMMENT,
           data: commentData,
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -127,14 +130,14 @@ class commentController {
         let data = await commentData.save();
         res.status(200).json({
           success: true,
-          message: "Successfully updated comment",
+          message: SUCCESS_UPDATE_COMMENT,
           data: data,
         });
         return;
       }
       res.status(434).json({
         success: false,
-        message: "Comment not found",
+        message: COMMENT_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -155,14 +158,14 @@ class commentController {
         let commentData = await comment.destroy();
         res.status(200).json({
           success: true,
-          message: "Successfully deleted comment",
+          message: SUCCESS_DELETE_COMMENT,
           data: commentData,
         });
         return;
       }
       res.status(434).json({
         success: false,
-        message: "Comment not found",
+        message: COMMENT_NOT_FOUND,
         data: "",
       });
     } catch (error) {

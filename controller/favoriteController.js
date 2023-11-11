@@ -1,4 +1,6 @@
 
+const { SUCCESS_FAVORITE, LIKED, SUCCESS_UNLIKE, UNLIKE } = require('../contants/error-code/favorite')
+const { RECIPE_NOT_FOUND } = require('../contants/error-code/recipe')
 const db = require('../models/index')
 
 class favoriteController {
@@ -30,19 +32,19 @@ class favoriteController {
                 await recipe.save()
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully',
+                    message: SUCCESS_FAVORITE,
                     data: favorite
                 })
             } else if(!recipe) {
                 res.status(432).json({
                     success: false, 
-                    message: 'Recipe not found',
+                    message: RECIPE_NOT_FOUND,
                     data: ""
                 })
             } else {
                 res.status(444).json({
                     success: false, 
-                    message: 'User liked this recipe',
+                    message: LIKED,
                     data: ""
                 })
             }
@@ -72,19 +74,19 @@ class favoriteController {
                 await recipe.save()
                 res.status(200).json({
                     success: true, 
-                    message: 'Successfully delete',
+                    message: SUCCESS_UNLIKE,
                     data: "",
                 })
             } else if(!recipe) {
                 res.status(432).json({
                     success: false, 
-                    message: 'Recipe not found',
+                    message: RECIPE_NOT_FOUND,
                     data: ""
                 })
             } else {
                 res.status(445).json({
                     success: false, 
-                    message: 'User has unliked this recipe',
+                    message: UNLIKE,
                     data: ""
                 })
             }

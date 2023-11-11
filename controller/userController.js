@@ -6,6 +6,8 @@ const { sequelize } = require("../models/index");
 const { Op } = require("sequelize");
 require("dotenv").config();
 const fs = require("fs");
+const { SUCCESS_GET_DATA, USER_NOT_FOUND, BLANK_FIELDS, SUCCESS_UPDATE, FOLLOW, FOLLOWED } = require("../contants/error-code/user");
+const { EMAIL_UNIQUE_ERROR } = require("../contants/error-code");
 
 class userController {
   getAllUser = async (req, res) => {
@@ -73,14 +75,14 @@ class userController {
       if (user) {
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: user,
         });
         return;
       }
       res.status(426).json({
         success: false,
-        message: "User not found",
+        message: USER_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -99,7 +101,7 @@ class userController {
     if (!fullName || !dateOfBirth || !address || !email) {
       res.status(418).json({
         success: false,
-        message: "Please provide all required fields",
+        message: BLANK_FIELDS,
         data: "",
       });
       return;
@@ -111,7 +113,7 @@ class userController {
     if (emailCheck) {
       res.status(422).json({
         success: false,
-        message: "Email already exists",
+        message: EMAIL_UNIQUE_ERROR,
         data: "",
       });
       return;
@@ -131,7 +133,7 @@ class userController {
 
         res.status(200).json({
           success: true,
-          message: "Successfully updated",
+          message: SUCCESS_UPDATE,
           data: updated,
         });
         return;
@@ -139,7 +141,7 @@ class userController {
 
       res.status(400).json({
         success: false,
-        message: "User not found",
+        message: USER_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -192,14 +194,14 @@ class userController {
         const newData = { users, count };
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: newData,
         });
         return;
       }
       res.status(441).json({
         success: false,
-        message: "User do not follow anyone",
+        message: FOLLOW,
         data: "",
       });
     } catch (error) {
@@ -252,14 +254,14 @@ class userController {
         const newData = { users, count };
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: newData,
         });
         return;
       }
       res.status(442).json({
         success: false,
-        message: "No one is following this user",
+        message: FOLLOWED,
         data: "",
       });
     } catch (error) {

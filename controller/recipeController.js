@@ -10,6 +10,8 @@ const {
   INTERNAL_ERROR,
   SUCCESS_CREATE_RECIPE
 } = require("../contants/error-code");
+const { RECIPE_NOT_FOUND, SUCCESS_DELETE_RECIPE, SUCCESS_SEARCH, RECIPE_NOT_FOUND_1 } = require("../contants/error-code/recipe");
+const { SUCCESS_GET_DATA, BLANK_FIELDS, SUCCESS_UPDATE } = require("../contants/error-code/user");
 const db = require("../models");
 const { sequelize } = require("../models/index");
 const Sequelize = require("sequelize");
@@ -75,13 +77,13 @@ class recipeController {
         });
         return res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: data,
         });
       }
       res.status(429).json({
         success: false,
-        message: "Don't have recipe",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -218,7 +220,7 @@ class recipeController {
     }
   };
 
-  handleUpdateRecpipe = async (req, res) => {
+    handleUpdateRecpipe = async (req, res) => {
     try {
       let {
         recipeName,
@@ -244,7 +246,7 @@ class recipeController {
       ) {
         res.status(418).json({
           status: false,
-          message: "Please provide all required fields",
+          message: BLANK_FIELDS,
           data: "",
         });
         return;
@@ -375,14 +377,14 @@ class recipeController {
 
           res.status(200).json({
             success: true,
-            message: "Successfully updated recipe",
+            message: SUCCESS_UPDATE,
             data: "",
           });
         });
       } else {
         res.status(432).json({
           success: false,
-          message: "Recipe not found",
+          message: RECIPE_NOT_FOUND,
           data: "",
         });
       }
@@ -429,14 +431,14 @@ class recipeController {
 
         res.status(200).json({
           success: true,
-          message: "Successfully deleted recipe",
+          message: SUCCESS_DELETE_RECIPE,
           data: "",
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -525,14 +527,14 @@ class recipeController {
       if (recipe) {
         res.json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -568,7 +570,7 @@ class recipeController {
         const uniqueArr = [...new Set(recipe.map(item => item.dataValues.recipeName))].map(recipeName => ({recipeName}));
         res.status(200).json({
           success: true,
-          message: "Successfully search",
+          message: SUCCESS_SEARCH,
           data: uniqueArr,
         });
         return;
@@ -576,7 +578,7 @@ class recipeController {
 
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: SUCCESS_SEARCH,
         data: "",
       });
     } catch (error) {
@@ -600,14 +602,14 @@ class recipeController {
         let recipeData = await recipe.save();
         res.status(200).json({
           success: true,
-          message: "Successfully updated recipe",
+          message: SUCCESS_UPDATE,
           data: recipeData,
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -694,14 +696,14 @@ class recipeController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
       }
       res.status(428).json({
         success: false,
-        message: `Don't have recipe with '${slug}'`,
+        message: RECIPE_NOT_FOUND_1 + `${slug}`,
         data: "",
       });
     } catch (error) {
@@ -806,13 +808,13 @@ class recipeController {
         });
         return res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -915,7 +917,7 @@ class recipeController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
@@ -973,7 +975,7 @@ class recipeController {
       if (recipe && recipe.length > 0) {
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
@@ -981,7 +983,7 @@ class recipeController {
 
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -1051,7 +1053,7 @@ class recipeController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
@@ -1059,7 +1061,7 @@ class recipeController {
 
       res.status(432).json({
         success: true,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: '',
       });
     } catch (error) {
@@ -1144,7 +1146,7 @@ class recipeController {
         const newData = { user, recipe };
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
@@ -1152,7 +1154,7 @@ class recipeController {
 
       res.status(432).json({
         success: true,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: '',
       });
     } catch (error) {
@@ -1223,7 +1225,7 @@ class recipeController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully search",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
@@ -1231,7 +1233,7 @@ class recipeController {
 
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -1299,14 +1301,14 @@ class recipeController {
         });
         res.status(200).json({
           success: true,
-          message: "Successfully search",
+          message: SUCCESS_SEARCH,
           data: recipe,
         });
         return;
       }
       res.status(400).json({
         success: false,
-        message: "User do not have any recipe",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {

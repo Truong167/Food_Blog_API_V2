@@ -4,6 +4,10 @@ const multerConfig = require("../middlewares/utils/multerConfig");
 const Sequelize = require("sequelize");
 const { Op } = Sequelize;
 const fs = require("fs");
+const { SUCCESS_GET_DATA, BLANK_FIELDS } = require("../contants/error-code/user");
+const { RECIPE_LIST_NOT_FOUND, SUCCESS_CREATE_RECIPE_LIST, SUCCESS_CREATE_RECIPE, SUCCESS_DELETE_RECIPE } = require("../contants/error-code/recipeList");
+const { RECIPE_NOT_FOUND } = require("../contants/error-code/recipe");
+
 
 class recipeListController {
   getRecipeList = async (req, res) => {
@@ -19,14 +23,14 @@ class recipeListController {
       if (recipeList && recipeList.length > 0) {
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipeList,
         });
         return;
       }
       res.status(439).json({
         success: false,
-        message: "User do not have any recipe list",
+        message: RECIPE_LIST_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -43,7 +47,7 @@ class recipeListController {
     if (!name) {
       res.status(418).json({
         success: false,
-        message: "Missing request data",
+        message: BLANK_FIELDS,
         data: "",
       });
       return;
@@ -57,7 +61,7 @@ class recipeListController {
       });
       res.status(200).json({
         success: true,
-        message: `Recipe list saved successfully.`,
+        message: SUCCESS_CREATE_RECIPE_LIST,
         data: recipeList,
       });
     } catch (error) {
@@ -74,7 +78,7 @@ class recipeListController {
     if (!name) {
       res.status(418).json({
         success: false,
-        message: "Missing request data",
+        message: BLANK_FIELDS,
         data: "",
       });
       return;
@@ -175,7 +179,7 @@ class recipeListController {
       if (!recipe) {
         res.status(432).json({
           success: false,
-          message: "Recipe not found",
+          message: RECIPE_NOT_FOUND,
           data: "",
         });
       } else {
@@ -217,7 +221,7 @@ class recipeListController {
 
           res.status(200).json({
             success: true,
-            message: "Recipe created successfully",
+            message: SUCCESS_CREATE_RECIPE,
             data: "",
           });
         });
@@ -241,14 +245,14 @@ class recipeListController {
         let detailList = await recipe.destroy();
         res.status(200).json({
           success: true,
-          message: "Deleted successfully",
+          message: SUCCESS_DELETE_RECIPE,
           data: "",
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe not found",
+        message: RECIPE_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -276,7 +280,7 @@ class recipeListController {
       if (dt.length == 0) {
         res.status(447).json({
           success: false,
-          message: "Don't have recipe in this reipce list",
+          message: RECIPE_NOT_FOUND,
           data: "",
         });
         return;
@@ -337,14 +341,14 @@ class recipeListController {
       if (recipe && recipe.length > 0) {
         res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipe,
         });
         return;
       }
       res.status(432).json({
         success: false,
-        message: "Recipe list not found",
+        message: RECIPE_LIST_NOT_FOUND,
         data: "",
       });
     } catch (error) {
@@ -378,14 +382,14 @@ class recipeListController {
       if (recipeList.length > 0) {
         return res.status(200).json({
           success: true,
-          message: "Successfully get data",
+          message: SUCCESS_GET_DATA,
           data: recipeList,
         });
       }
 
       return res.status(400).json({
         success: false,
-        message: "No data",
+        message: RECIPE_LIST_NOT_FOUND,
         data: "",
       });
     } catch (error) {
